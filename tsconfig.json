@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2020",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "forceConsistentCasingInFileNames": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@entech/common": [
+        "src/common"
+      ],
+      "@entech/common/*": [
+        "src/common/*"
+      ],
+      "@entech/modules": [
+        "src/modules"
+      ],
+      "@entech/modules/*": [
+        "src/modules/*"
+      ],
+      "@entech/config": [
+        "src/config"
+      ],
+      "@entech/config/*": [
+        "src/config/*"
+      ],
+      "@entech/utils": [
+        "src/utils"
+      ],
+      "@entech/utils/*": [
+        "src/utils/*"
+      ]
+    },
+    "types": []
+  }
+}
