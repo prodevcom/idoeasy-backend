@@ -1,0 +1,15 @@
+# Docker Compose configuration for iDoEasy Backend
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    environment:
+      # Override specific variables if needed
+      - NODE_ENV=production
+    restart: unless-stopped

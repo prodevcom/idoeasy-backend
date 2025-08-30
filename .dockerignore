@@ -1,0 +1,42 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE files
+.vscode
+.idea
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+!ssh_keys/
+
+# Testing
+coverage
+test
+
+# Logs
+logs
+*.log
+
+# Cache files
+.turbo
+.eslintcache
+*.tsbuildinfo
+
+# Documentation
+docs
+README.md
+DOCKER.md
+

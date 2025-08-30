@@ -84,6 +84,49 @@ LOG_LEVEL=debug
 LOG_FORMAT=json
 ```
 
+## Docker
+
+### Quick Start with Docker
+
+The project includes Docker support for easy development and deployment:
+
+```bash
+# Build and run with Docker Compose
+docker-compose up --build
+
+# Or build and run manually
+docker build -t idoeasy-backend:latest .
+docker run --env-file .env -p 3000:3000 idoeasy-backend:latest
+```
+
+### Docker Features
+
+- 🐳 **Single .env file** - All environment variables in one place
+- 🚀 **MongoDB Atlas ready** - Configured for cloud MongoDB
+- 🔐 **SSH key support** - For private repository access during build
+- 📦 **ECR deployment** - Ready for AWS ECR deployment (default: 800572458310.dkr.ecr.us-east-1.amazonaws.com/idoeasy-backend)
+- 🧹 **Optimized build** - Multi-stage build with cleanup
+
+### Docker Commands
+
+```bash
+# Development
+docker-compose up --build
+
+# Production build
+docker build -t idoeasy-backend:latest .
+
+# ECR deployment (default: 800572458310.dkr.ecr.us-east-1.amazonaws.com/idoeasy-backend)
+./scripts/build-ecr.sh
+# Or custom repository
+./scripts/build-ecr.sh <ECR_URL> <TAG>
+
+# View logs
+docker-compose logs -f app
+```
+
+📖 **For detailed Docker documentation, see [docs/DOCKER.md](docs/DOCKER.md)**
+
 ## Running the Application
 
 ### Development
