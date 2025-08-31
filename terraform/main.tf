@@ -17,7 +17,9 @@ provider "aws" {
 data "aws_secretsmanager_secret" "app_env" {
   name = "${var.project_name}-${var.environment}-env"
 }
-
+locals {
+  app_env_arn = data.aws_secretsmanager_secret.app_env.arn
+}
 # IAM Role for App Runner Service (execution) - already exists
 data "aws_iam_role" "app_runner_service_role" {
   name = "${var.project_name}-${var.environment}-app-runner-service-role"
@@ -28,6 +30,25 @@ data "aws_iam_role" "app_runner_access_role" {
   name = "${var.project_name}-${var.environment}-app-runner-access-role"
 }
 
+# Let the *instance role* read the secret (and its versions)
+resource "aws_iam_role_policy" "app_runner_secrets_read" {
+  name = "${var.project_name}-${var.environment}-secrets-read"
+  role = data.aws_iam_role.app_runner_service_role.name
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = ["secretsmanager:GetSecretValue"],
+        Resource = [
+          local.app_env_arn,
+          "${local.app_env_arn}*"
+        ]
+      }
+    ]
+  })
+}
+
 # App Runner Service
 resource "aws_apprunner_service" "backend" {
   service_name = "${var.project_name}-${var.environment}-backend"
@@ -36,21 +57,19 @@ resource "aws_apprunner_service" "backend" {
     image_repository {
       image_configuration {
         port = var.port
+        runtime_environment_variables = {
+          NODE_ENV   = var.environment == "prod" ? "production" : "development"
+          PORT       = tostring(var.port)
+          LOG_LEVEL  = var.log_level
+          LOG_FORMAT = var.log_format
+        }
         runtime_environment_secrets = {
-          # Using existing Secrets Manager values (DO NOT MODIFY)
-          NODE_ENV                 = "${data.aws_secretsmanager_secret.app_env.arn}:NODE_ENV::"
-          PORT                     = "${data.aws_secretsmanager_secret.app_env.arn}:PORT::"
-          LOG_LEVEL                = "${data.aws_secretsmanager_secret.app_env.arn}:LOG_LEVEL::"
-          LOG_FORMAT               = "${data.aws_secretsmanager_secret.app_env.arn}:LOG_FORMAT::"
-          AWS_DEFAULT_REGION       = "${data.aws_secretsmanager_secret.app_env.arn}:AWS_DEFAULT_REGION::"
-          MONGODB_URI              = "${data.aws_secretsmanager_secret.app_env.arn}:MONGODB_URI::"
-          JWT_SECRET               = "${data.aws_secretsmanager_secret.app_env.arn}:JWT_SECRET::"
-          JWT_EXPIRES              = "${data.aws_secretsmanager_secret.app_env.arn}:JWT_EXPIRES::"
-          JWT_MAX_INACTIVE_MINUTES = "${data.aws_secretsmanager_secret.app_env.arn}:JWT_MAX_INACTIVE_MINUTES::"
-          USER_ADMIN               = "${data.aws_secretsmanager_secret.app_env.arn}:USER_ADMIN::"
-          USER_PASSWORD            = "${data.aws_secretsmanager_secret.app_env.arn}:USER_PASSWORD::"
-          AWS_ACCESS_KEY_ID        = "${data.aws_secretsmanager_secret.app_env.arn}:AWS_ACCESS_KEY_ID::"
-          AWS_SECRET_ACCESS_KEY    = "${data.aws_secretsmanager_secret.app_env.arn}:AWS_SECRET_ACCESS_KEY::"
+          MONGODB_URI              = "${local.app_env_arn}:MONGODB_URI::"
+          JWT_SECRET               = "${local.app_env_arn}:JWT_SECRET::"
+          JWT_EXPIRES              = "${local.app_env_arn}:JWT_EXPIRES::"
+          JWT_MAX_INACTIVE_MINUTES = "${local.app_env_arn}:JWT_MAX_INACTIVE_MINUTES::"
+          USER_ADMIN               = "${local.app_env_arn}:USER_ADMIN::"
+          USER_PASSWORD            = "${local.app_env_arn}:USER_PASSWORD::"
         }
       }
       image_identifier      = var.docker_image_uri
@@ -67,10 +86,10 @@ resource "aws_apprunner_service" "backend" {
   health_check_configuration {
     protocol            = "HTTP"
     path                = "/api/v1/health"
-    interval            = 20
-    timeout             = 10
+    interval            = 5
+    timeout             = 2
     healthy_threshold   = 1
-    unhealthy_threshold = 10
+    unhealthy_threshold = 5
   }
 
   # Network Configuration

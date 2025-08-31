@@ -11,6 +11,18 @@ variable "environment" {
   default     = "prod"
 }
 
+variable "log_level" {
+  description = "Logging level"
+  type        = string
+  default     = "info"
+}
+
+variable "log_format" {
+  description = "Logging format"
+  type        = string
+  default     = "json"
+}
+
 variable "aws_region" {
   description = "AWS region"
   type        = string
