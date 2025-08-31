@@ -16,7 +16,7 @@ export class AuditLog implements Omit<AuditLogContract, 'id'> {
     description: 'User who performed the action',
     type: String,
   })
-  @Prop({ type: Types.ObjectId, ref: User.name, required: true, index: true })
+  @Prop({ type: Types.ObjectId, ref: User.name, required: true })
   userId: Types.ObjectId | string;
 
   @ApiProperty({
@@ -51,7 +51,7 @@ export class AuditLog implements Omit<AuditLogContract, 'id'> {
     description: 'Session ID associated with the action',
     type: String,
   })
-  @Prop({ type: Types.ObjectId, ref: Session.name, index: true })
+  @Prop({ type: Types.ObjectId, ref: Session.name })
   sessionId?: Types.ObjectId | string;
 
   @ApiProperty({
@@ -75,9 +75,8 @@ export class AuditLog implements Omit<AuditLogContract, 'id'> {
 export const AuditLogSchema = SchemaFactory.createForClass(AuditLog);
 
 // Add indexes for optimal query performance with ObjectId userId
-AuditLogSchema.index({ userId: 1, createdAt: -1 }); // Primary index for user logs by date
+AuditLogSchema.index({ userId: 1, createdAt: -1 }); // Primary index for user logs by date (covers userId: 1)
 AuditLogSchema.index({ module: 1, action: 1, createdAt: -1 }); // Module/action queries
 AuditLogSchema.index({ severity: 1, createdAt: -1 }); // Severity filtering
 AuditLogSchema.index({ createdAt: -1 }); // General date sorting
-AuditLogSchema.index({ userId: 1, module: 1 }); // User-specific module logs
 AuditLogSchema.index({ sessionId: 1 }); // Session-specific logs

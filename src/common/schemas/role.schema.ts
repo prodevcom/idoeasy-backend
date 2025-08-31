@@ -73,6 +73,5 @@ export class Role implements Omit<RoleContract, 'id'> {
 export const RoleSchema = SchemaFactory.createForClass(Role);
 
 // Add indexes for hierarchy queries
-RoleSchema.index({ ancestors: 1 }); // For finding descendants
 RoleSchema.index({ depth: 1 }); // For depth-based queries
-RoleSchema.index({ ancestors: 1, depth: 1 }); // Compound index for subtree queries
+RoleSchema.index({ ancestors: 1, depth: 1 }); // Compound index for subtree queries (covers ancestors queries too)

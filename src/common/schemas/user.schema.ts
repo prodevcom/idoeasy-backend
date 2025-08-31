@@ -68,13 +68,8 @@ export const UserSchema = SchemaFactory.createForClass(User);
 
 // Add indexes for optimal query performance
 // UserSchema.index({ email: 1 }); // Unique constraint already creates the index
-UserSchema.index({ role: 1 }); // Critical for hierarchy filtering (role.$in queries)
-UserSchema.index({ status: 1 }); // For status filtering
-UserSchema.index({ name: 1 }); // For name sorting and search
-UserSchema.index({ createdAt: -1 }); // For default sorting (newest first)
 
-// Compound indexes for common query patterns
-UserSchema.index({ role: 1, status: 1 }); // Role + status filtering (most common)
-UserSchema.index({ role: 1, createdAt: -1 }); // Role filtering + sorting by date
-UserSchema.index({ status: 1, createdAt: -1 }); // Status filtering + sorting
+// Compound indexes for common query patterns (cover single-field queries too)
+UserSchema.index({ role: 1, status: 1, createdAt: -1 }); // Role + status + date (covers role: 1, status: 1, role+status)
+UserSchema.index({ createdAt: -1 }); // For default sorting (newest first)
 UserSchema.index({ name: 'text', email: 'text' }); // Text search on name and email
