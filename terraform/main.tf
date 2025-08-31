@@ -30,28 +30,20 @@ data "aws_iam_role" "app_runner_access_role" {
   name = "${var.project_name}-${var.environment}-app-runner-access-role"
 }
 
-# Let the *instance role* read the secret (and its versions)
-resource "aws_iam_role_policy" "app_runner_secrets_read" {
-  name = "${var.project_name}-${var.environment}-secrets-read"
-  role = data.aws_iam_role.app_runner_service_role.name
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = ["secretsmanager:GetSecretValue"],
-        Resource = [
-          local.app_env_arn,
-          "${local.app_env_arn}*"
-        ]
-      }
-    ]
-  })
-}
 
 # App Runner Service
 resource "aws_apprunner_service" "backend" {
   service_name = "${var.project_name}-${var.environment}-backend"
+
+  # Prevent recreation unless absolutely necessary
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes = [
+      source_configuration.0.image_repository.0.image_identifier,
+      health_check_configuration,
+      network_configuration
+    ]
+  }
 
   source_configuration {
     image_repository {
