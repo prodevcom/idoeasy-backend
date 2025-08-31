@@ -121,6 +121,12 @@ export class SessionsService {
     user: User;
   }> {
     try {
+      if (!accessToken) {
+        throw new UnauthorizedException(
+          'Invalid access token - no token provided',
+        );
+      }
+
       this.jwtService.verify(accessToken);
 
       const session = await this.sessionModel
