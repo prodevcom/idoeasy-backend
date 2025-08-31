@@ -1,102 +1,120 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-# 🚀 iDoEasy Backend - Deploy Script
-# Usage: ./deploy.sh -prod or ./deploy.sh -dev
+# Colors
+RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'; BLUE='\033[0;34m'; NC='\033[0m'
+log()    { echo -e "${BLUE}🚀 iDoEasy Backend - $*${NC}"; }
+error()  { echo -e "${RED}❌ $*${NC}"; exit 1; }
+warn()   { echo -e "${YELLOW}⚠️  $*${NC}"; }
+ok()     { echo -e "${GREEN}✅ $*${NC}"; }
 
-set -e
+# Defaults
+AWS_REGION_DEFAULT="us-east-1"
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+# Parse args
+ENVIRONMENT=""
+AWS_PROFILE=""
+AWS_REGION=""
+AUTO_APPROVE="false"
 
-# Function to show messages
-log() {
-    echo -e "${BLUE}🚀 iDoEasy Backend - $1${NC}"
+usage() {
+  cat <<EOF
+Usage: $(basename "$0") -prod|-dev [--profile <aws-profile>] [--region <aws-region>] [--yes]
+
+  -prod | -dev           Choose environment (required)
+  --profile <profile>    AWS CLI profile to use (optional)
+  --region <region>      AWS region override (defaults to ${AWS_REGION_DEFAULT})
+  --yes                  Skip confirmation (terraform apply -auto-approve)
+EOF
 }
 
-error() {
-    echo -e "${RED}❌ Error: $1${NC}"
-    exit 1
-}
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -prod) ENVIRONMENT="prod"; shift ;;
+    -dev)  ENVIRONMENT="dev";  shift ;;
+    --profile) AWS_PROFILE="$2"; shift 2 ;;
+    --region)  AWS_REGION="$2";  shift 2 ;;
+    --yes)     AUTO_APPROVE="true"; shift ;;
+    -h|--help) usage; exit 0 ;;
+    *) error "Unknown arg: $1";;
+  esac
+done
 
-success() {
-    echo -e "${GREEN}✅ $1${NC}"
-}
+[[ -z "${ENVIRONMENT}" ]] && { usage; error "Missing -prod or -dev"; }
 
-warning() {
-    echo -e "${YELLOW}⚠️  $1${NC}"
-}
+# Tools
+command -v terraform >/dev/null || error "Terraform not installed"
+command -v aws >/dev/null || error "AWS CLI not installed"
 
-# Check parameters
-if [ $# -eq 0 ]; then
-    error "Usage: $0 -prod or $0 -dev"
+# AWS profile handling (fallback if profile não existe)
+if [[ -n "${AWS_PROFILE}" ]]; then
+  if ! aws configure list-profiles | grep -qx "${AWS_PROFILE}"; then
+    warn "Profile '${AWS_PROFILE}' not found; using default credentials."
+    unset AWS_PROFILE
+  else
+    export AWS_PROFILE
+    log "Using AWS profile: ${AWS_PROFILE}"
+  fi
 fi
 
-# Define environment
-case "$1" in
-    -prod)
-        ENVIRONMENT="prod"
-        log "Production"
-        ;;
-    -dev)
-        ENVIRONMENT="dev"
-        log "Development"
-        ;;
-    *)
-        error "Invalid parameter. Use -prod or -dev"
-        ;;
-esac
-
-# Set only environment - Terraform uses existing state
-export TF_VAR_environment="$ENVIRONMENT"
-
-log "Environment: $ENVIRONMENT"
-log "Using existing Terraform state"
-
-# Check if Terraform is installed
-if ! command -v terraform &> /dev/null; then
-    error "Terraform is not installed"
+# Region
+if [[ -z "${AWS_REGION}" ]]; then
+  AWS_REGION="${AWS_REGION_DEFAULT}"
 fi
+export AWS_REGION
+log "AWS region: ${AWS_REGION}"
 
-# Check if AWS CLI is configured
-if ! aws sts get-caller-identity &> /dev/null; then
-    error "AWS CLI is not configured or has no permissions"
-fi
+# Verify caller identity
+aws sts get-caller-identity >/dev/null || error "AWS CLI not configured or lacks permissions"
 
-# Initialize Terraform (if necessary)
-if [ ! -d ".terraform" ]; then
-    log "Initializing Terraform..."
-    terraform init
-fi
+# Terraform vars
+TFVARS_FILE="env/${ENVIRONMENT}.tfvars"
+PLAN_ARGS=(-var="environment=${ENVIRONMENT}" -var="aws_region=${AWS_REGION}")
 
-# Check current state
-log "Checking current state..."
-terraform state list
-
-# Plan changes
-log "Planning changes..."
-terraform plan -out=tfplan
-
-# Apply changes
-warning "Applying changes to AWS..."
-read -p "Continue? (y/N): " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    log "Applying..."
-    terraform apply tfplan
-    success "Deploy completed successfully!"
-    
-    # Show outputs
-    log "Outputs:"
-    terraform output
-    
-    # Clean plan file
-    rm -f tfplan
+if [[ -f "${TFVARS_FILE}" ]]; then
+  log "Loading var-file: ${TFVARS_FILE}"
+  PLAN_ARGS+=(-var-file="${TFVARS_FILE}")
 else
-    log "Deploy cancelled"
+  warn "No ${TFVARS_FILE} found. Using defaults & inline vars."
+fi
+
+log "Effective settings:"
+echo "  environment = ${ENVIRONMENT}"
+echo "  aws_region  = ${AWS_REGION}"
+[[ -f "${TFVARS_FILE}" ]] && echo "  var-file    = ${TFVARS_FILE}"
+
+# Init
+log "terraform init..."
+terraform init -upgrade
+
+# State presence (optional)
+if terraform state list >/dev/null 2>&1; then
+  log "Terraform state detected"
+else
+  warn "No Terraform state found (first apply?)"
+fi
+
+# Plan (gera tfplan com os args acima)
+log "terraform plan..."
+terraform plan -out=tfplan "${PLAN_ARGS[@]}"
+
+# Apply (NÃO passar -var/-var-file aqui quando usa tfplan)
+if [[ "${AUTO_APPROVE}" == "true" ]]; then
+  log "terraform apply -auto-approve tfplan"
+  terraform apply -auto-approve tfplan
+else
+  warn "About to apply changes to AWS."
+  read -r -p "Continue? (y/N): " REPLY
+  if [[ ! "${REPLY}" =~ ^[Yy]$ ]]; then
+    log "Cancelled."
     rm -f tfplan
     exit 0
+  fi
+  log "terraform apply tfplan"
+  terraform apply tfplan
 fi
+
+ok "Deploy completed."
+log "Outputs:"
+terraform output || true
+rm -f tfplan || true
