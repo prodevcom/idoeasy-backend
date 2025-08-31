@@ -33,10 +33,19 @@ A NestJS backend application with MongoDB integration, class validation, standar
 - 📊 **Standardized JSON Responses** - Consistent API response format with pagination
 - 🛡️ **Global Error Handling** - Comprehensive exception filtering
 - ⚙️ **Modular Architecture** - Clean separation of concerns
-- 🔒 **CORS Support** - Cross-origin resource sharing enabled
+- 🔒 **Advanced CORS Security** - Production-ready CORS with domain validation
 - 📚 **Advanced Swagger Documentation** - Interactive API documentation with decorators
 - 🧪 **Unit Tests** - Full test coverage for all modules
 - 📄 **Pagination Support** - Built-in pagination with search and filtering
+- 🚀 **Production Ready** - Secure configuration for production environments
+
+## Security Features
+
+- **🔒 CORS Protection**: Only allows requests from configured `PRIMARY_DOMAIN` and its subdomains
+- **🛡️ Environment-based Security**: Different CORS policies for development and production
+- **📝 Comprehensive Logging**: All CORS violations are logged for security monitoring
+- **🔐 JWT Authentication**: Secure token-based authentication system
+- **👥 Role-based Access Control**: Granular permissions and role management
 
 ## Prerequisites
 
@@ -64,25 +73,55 @@ cp .env.example .env
 
 4. Configure your environment variables in `.env`:
 ```env
-# Database Configuration
-MONGODB_URI=mongodb://localhost:27017/i-do-easy
-
 # Application Configuration
-NODE_ENV=development
+NODE_ENV=production
 PORT=3000
+
+# Domain Configuration (REQUIRED for production)
+PRIMARY_DOMAIN=yourdomain.com
+
+# Database Configuration (MongoDB Atlas)
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority
 
 # JWT Configuration
 JWT_SECRET=your-super-secret-jwt-key-here
 JWT_EXPIRES=1440
+JWT_MAX_INACTIVE_MINUTES=180
 
 # Admin User
 USER_ADMIN=admin@entech.io
 USER_PASSWORD=123@Change$
 
 # Logging
-LOG_LEVEL=debug
+LOG_LEVEL=info
 LOG_FORMAT=json
 ```
+
+## CORS Configuration
+
+The application includes a production-ready CORS configuration that:
+
+- **In Production**: Only allows requests from `PRIMARY_DOMAIN` and its subdomains
+- **In Development**: Allows localhost and development origins for testing
+- **Security**: Blocks unauthorized origins with detailed logging
+- **Flexibility**: Configurable via environment variables
+
+### Testing CORS Configuration
+
+Use the included test script to verify CORS is working correctly:
+
+```bash
+# Test with default domain (idoeasy.net)
+node test-cors-strict.js
+
+# Test with custom domain
+node test-cors-strict.js yourdomain.com
+
+# Test against different API URL
+API_URL=https://api.yourdomain.com node test-cors-strict.js yourdomain.com
+```
+
+For more details, see [CORS Configuration Guide](docs/CORS_CONFIGURATION.md).
 
 ## Docker
 

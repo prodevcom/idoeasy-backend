@@ -7,6 +7,9 @@ export default () => ({
     globalPrefix: 'api/v1',
     port: parseInt(process.env.PORT || '3000', 10),
   },
+  domain: {
+    primary: process.env.PRIMARY_DOMAIN || 'idoeasy.net',
+  },
   jwt: {
     secret: process.env.JWT_SECRET || 'your-secret-key',
     expiresIn: parseInt(process.env.JWT_EXPIRES || '1440', 10), // 24 hours in minutes (1440)
@@ -30,8 +33,8 @@ export default () => ({
     version: '1.0',
     contact: {
       name: 'iDoEasy Tech',
-      email: 'support@idowasy.net',
-      url: 'https://www.idowasy.net',
+      email: 'support@idoeasy.net',
+      url: `https://www.${process.env.PRIMARY_DOMAIN || 'idoeasy.net'}`,
     },
     license: {
       name: 'UNLICENSED',
@@ -40,6 +43,10 @@ export default () => ({
       {
         url: 'http://localhost:3000',
         description: 'Development server',
+      },
+      {
+        url: `https://api.${process.env.PRIMARY_DOMAIN || 'idoeasy.net'}`,
+        description: 'Production server',
       },
     ],
     tags: [
@@ -63,7 +70,7 @@ export default () => ({
     },
     externalDocs: {
       description: 'Find more info here',
-      url: 'https://docs.idowasy.net',
+      url: `https://docs.${process.env.PRIMARY_DOMAIN || 'idoeasy.net'}`,
     },
   },
 });

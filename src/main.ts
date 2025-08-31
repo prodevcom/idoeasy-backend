@@ -4,14 +4,19 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { AppModule } from './app.module';
-import { corsDelegate } from './config';
+import { createCorsConfig } from './config/cors.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 
-  // Enable CORS
-  app.enableCors(corsDelegate());
+  // Get PRIMARY_DOMAIN from configuration
+  const primaryDomain =
+    configService.get<string>('domain.primary') || 'idoeasy.net';
+
+  // Apply CORS configuration
+  const corsConfig = createCorsConfig(primaryDomain);
+  app.enableCors(corsConfig);
 
   // Global validation pipe
   app.useGlobalPipes(
@@ -41,5 +46,6 @@ async function bootstrap() {
   const logger = new Logger('Bootstrap');
 
   logger.log(`🚀 Application is running on: http://localhost:${port}`);
+  logger.log(`🔒 CORS configured for domain: ${primaryDomain}`);
 }
 bootstrap();
