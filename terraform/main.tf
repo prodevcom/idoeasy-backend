@@ -50,10 +50,11 @@ resource "aws_apprunner_service" "backend" {
       image_configuration {
         port = var.port
         runtime_environment_variables = {
-          NODE_ENV   = var.environment == "prod" ? "production" : "development"
-          PORT       = tostring(var.port)
-          LOG_LEVEL  = var.log_level
-          LOG_FORMAT = var.log_format
+          NODE_ENV       = var.environment == "prod" ? "production" : "development"
+          PORT           = tostring(var.port)
+          LOG_LEVEL      = var.log_level
+          LOG_FORMAT     = var.log_format
+          PRIMARY_DOMAIN = var.primary_domain
         }
         runtime_environment_secrets = {
           MONGODB_URI              = "${local.app_env_arn}:MONGODB_URI::"

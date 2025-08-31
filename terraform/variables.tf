@@ -61,3 +61,9 @@ variable "custom_domain" {
   type        = string
   default     = "api.idoeasy.net"
 }
+
+variable "primary_domain" {
+  description = "Primary domain for App Runner"
+  type        = string
+  default     = "idoeasy.net"
+}
