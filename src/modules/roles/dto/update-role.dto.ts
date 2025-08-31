@@ -36,12 +36,4 @@ export class UpdateRoleDto implements UpdateRoleRequest {
   })
   @IsBoolean()
   isAdmin: boolean;
-
-  @ApiPropertyOptional({
-    description:
-      'Parent role ID for moving in hierarchy (null/undefined to move to root)',
-    example: '507f1f77bcf86cd799439011',
-  })
-  @IsString()
-  parentId: string;
 }
