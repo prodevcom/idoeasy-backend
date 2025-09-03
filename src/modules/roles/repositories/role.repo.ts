@@ -1,4 +1,4 @@
-import { CurrentUser, Role } from '@idoeasy/common';
+import { CurrentUser, Permission, Role } from '@idoeasy/common';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ClientSession, Model, Types } from 'mongoose';
@@ -19,6 +19,7 @@ export class RoleRepo {
     createRoleDto: CreateRoleDto,
     session?: ClientSession,
   ): Promise<Role> {
+    console.log('', createRoleDto);
     return this.roleModel
       .create([createRoleDto], session ? { session } : {})
       .then((roles) => roles[0]);
@@ -109,7 +110,16 @@ export class RoleRepo {
    * @returns The role
    */
   async findWithPermissionsById(id: string) {
-    return this.roleModel.findById(id).populate('permissions').lean().exec();
+    return this.roleModel
+      .findById(id)
+      .populate({
+        path: 'permissions',
+        model: Permission.name,
+        select: 'name',
+        options: { lean: true },
+      })
+      .lean()
+      .exec();
   }
 
   /**

@@ -366,7 +366,7 @@ export class RoleHierarchyHooksService extends BaseAuditHooksService {
       isActive: role.isActive,
       isDefault: role.isDefault,
       isAdmin: role.isAdmin,
-      permissions: role.permissions.map((p) =>
+      permissions: role.permissionIds?.map((p) =>
         typeof p === 'string' ? p : p._id?.toString() || p.toString(),
       ),
     };

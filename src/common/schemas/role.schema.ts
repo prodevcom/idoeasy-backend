@@ -10,7 +10,6 @@ export type RoleDoc = HydratedDocument<Role>;
 
 @Schema({ timestamps: true })
 export class Role implements Omit<RoleContract, 'id'> {
-  permissionIds: Types.ObjectId[];
   @ApiProperty({ description: 'Role unique identifier' })
   _id: string;
 
@@ -49,7 +48,7 @@ export class Role implements Omit<RoleContract, 'id'> {
     type: [Types.ObjectId],
   })
   @Prop({ type: [{ type: Types.ObjectId, ref: Permission.name }], default: [] })
-  permissionsIds: Types.ObjectId[];
+  permissionIds: Types.ObjectId[];
 
   @ApiProperty({
     description: 'Array of permissions associated with this role',
@@ -83,7 +82,7 @@ export const RoleSchema = SchemaFactory.createForClass(Role);
 // Virtual that exposes `permissions` from `permissionsIds`
 RoleSchema.virtual('permissions', {
   ref: Permission.name,
-  localField: 'permissionsIds',
+  localField: 'permissionIds',
   foreignField: '_id',
   justOne: false,
 });
