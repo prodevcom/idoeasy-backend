@@ -28,7 +28,7 @@ export class UpdateRoleDto implements UpdateRoleRequest {
   })
   @IsArray()
   @IsString({ each: true })
-  permissions: string[];
+  permissionIds: string[];
 
   @ApiPropertyOptional({
     description: 'Whether this role is the admin role',

@@ -29,7 +29,7 @@ export class CreateRoleDto implements CreateRoleRequest {
   })
   @IsArray()
   @IsString({ each: true })
-  permissions: string[];
+  permissionIds: string[];
 
   @ApiProperty({ description: 'Whether the role is active', example: true })
   @IsBoolean()

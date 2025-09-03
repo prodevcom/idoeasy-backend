@@ -1,11 +1,11 @@
 import { TransformDate, TransformObjectId } from '@idoeasy/common';
-import type { Role } from '@idoeasy/contracts';
+import type { Permission, Role } from '@idoeasy/contracts';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { Types } from 'mongoose';
 import { PermissionResponseDto } from './permission-response.dto';
 
-export class RoleResponseDto implements Role {
+export class RoleResponseDto implements Omit<Role, 'permissionIds'> {
   @ApiProperty({ description: 'Role unique identifier' })
   @TransformObjectId('_id')
   @Expose()
@@ -41,12 +41,12 @@ export class RoleResponseDto implements Role {
   isAdmin: boolean;
 
   @ApiProperty({
-    description: 'Array of permission IDs',
+    description: 'Array of permissions',
     type: [PermissionResponseDto],
   })
   @Type(() => PermissionResponseDto)
   @Expose()
-  permissions: Types.ObjectId[];
+  permissions: Permission[];
 
   @ApiProperty({
     description: 'Array of ancestor role IDs for hierarchy',

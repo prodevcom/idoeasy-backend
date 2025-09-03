@@ -3,7 +3,6 @@ import { User, UserPreferences, UserStatus } from '@idoeasy/contracts';
 import { RoleResponseDto } from '@idoeasy/modules/roles/dto/role-response.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { Types } from 'mongoose';
 
 export class UserResponseDto implements Omit<User, 'password'> {
   @ApiProperty({
@@ -42,9 +41,8 @@ export class UserResponseDto implements Omit<User, 'password'> {
     required: false,
   })
   @Expose()
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   @Type(() => RoleResponseDto)
-  role?: Types.ObjectId;
+  role?: RoleResponseDto;
 
   @ApiProperty({
     description: 'User metadata',

@@ -38,7 +38,7 @@ export class RolesService {
     // Verify if the user has access to the permissions
     await this.verifyPermissionAccess(
       currentUser,
-      createRoleDto.permissions || [],
+      createRoleDto.permissionIds || [],
     );
 
     // Verify parent role access if specified
@@ -170,7 +170,7 @@ export class RolesService {
     this.verifyRoleAdminAccess(currentUser, updateRoleDto.isAdmin);
     await this.verifyPermissionAccess(
       currentUser,
-      updateRoleDto.permissions || [],
+      updateRoleDto.permissionIds || [],
     );
 
     const updatedRole = await this.roleRepo.update(id, updateRoleDto);

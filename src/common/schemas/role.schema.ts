@@ -2,6 +2,7 @@ import type { Role as RoleContract } from '@idoeasy/contracts';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Document, HydratedDocument, Types } from 'mongoose';
+import { mongooseLeanVirtuals } from 'mongoose-lean-virtuals';
 import { Permission } from './permission.schema';
 
 export type RoleDocument = Role & Document;
@@ -9,6 +10,7 @@ export type RoleDoc = HydratedDocument<Role>;
 
 @Schema({ timestamps: true })
 export class Role implements Omit<RoleContract, 'id'> {
+  permissionIds: Types.ObjectId[];
   @ApiProperty({ description: 'Role unique identifier' })
   _id: string;
 
@@ -47,7 +49,13 @@ export class Role implements Omit<RoleContract, 'id'> {
     type: [Types.ObjectId],
   })
   @Prop({ type: [{ type: Types.ObjectId, ref: Permission.name }], default: [] })
-  permissions: Types.ObjectId[];
+  permissionsIds: Types.ObjectId[];
+
+  @ApiProperty({
+    description: 'Array of permissions associated with this role',
+    type: [Permission],
+  })
+  permissions: Permission[];
 
   @ApiProperty({
     description: 'Array of ancestor role IDs for hierarchy materialized path',
@@ -72,6 +80,21 @@ export class Role implements Omit<RoleContract, 'id'> {
 
 export const RoleSchema = SchemaFactory.createForClass(Role);
 
+// Virtual that exposes `permissions` from `permissionsIds`
+RoleSchema.virtual('permissions', {
+  ref: Permission.name,
+  localField: 'permissionsIds',
+  foreignField: '_id',
+  justOne: false,
+});
+
+// Enable virtual in toJSON/toObject
+RoleSchema.set('toObject', { virtuals: true });
+RoleSchema.set('toJSON', { virtuals: true });
+
+RoleSchema.plugin(mongooseLeanVirtuals);
+
 // Add indexes for hierarchy queries
 RoleSchema.index({ depth: 1 }); // For depth-based queries
 RoleSchema.index({ ancestors: 1, depth: 1 }); // Compound index for subtree queries (covers ancestors queries too)
+RoleSchema.index({ name: 1, description: 1 }); // For name-based queries
