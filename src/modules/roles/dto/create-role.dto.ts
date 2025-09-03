@@ -1,4 +1,4 @@
-import type { CreateRoleRequest } from '@entech/contracts';
+import type { CreateRoleRequest } from '@idoeasy/contracts';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsArray,

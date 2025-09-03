@@ -1,4 +1,4 @@
-import { Role } from '@entech/common';
+import { Role } from '@idoeasy/common';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { RoleRepo } from '../repositories/role.repo';

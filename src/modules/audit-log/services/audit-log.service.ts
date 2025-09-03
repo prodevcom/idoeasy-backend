@@ -1,9 +1,9 @@
-import { PaginationInfo } from '@entech/common';
+import { PaginationInfo } from '@idoeasy/common';
 import type {
   AuditLog as AuditLogContract,
   CreateAuditLogRequest,
   PaginatedResponse,
-} from '@entech/contracts';
+} from '@idoeasy/contracts';
 import { Injectable } from '@nestjs/common';
 import { AuditLogResponseDto, AuditLogsQueryDto } from '../dto/';
 import { parseAuditLog } from '../helpers';

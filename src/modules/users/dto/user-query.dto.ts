@@ -1,4 +1,4 @@
-import { UserQueryParams, UserStatus } from '@entech/contracts';
+import { UserQueryParams, UserStatus } from '@idoeasy/contracts';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {

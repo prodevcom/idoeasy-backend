@@ -1,4 +1,4 @@
-import { CurrentUser, User } from '@entech/common';
+import { CurrentUser, User } from '@idoeasy/common';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';

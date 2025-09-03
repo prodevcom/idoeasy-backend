@@ -23,7 +23,7 @@
     "clean": "rm -rf dist node_modules package-lock.json"
   },
   "dependencies": {
-    "@entech/contracts": "git+ssh://git@github.com/prodevcom/idoeasy-contracts.git",
+    "@idoeasy/contracts": "git+ssh://git@github.com/prodevcom/idoeasy-contracts.git",
     "@nestjs/common": "^11.1.6",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.1.6",
@@ -37,6 +37,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "mongoose": "^8.17.1",
+    "mongoose-lean-virtuals": "^2.0.0",
     "nestjs-zod": "^4.3.1",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",

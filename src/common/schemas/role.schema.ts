@@ -1,4 +1,4 @@
-import type { Role as RoleContract } from '@entech/contracts';
+import type { Role as RoleContract } from '@idoeasy/contracts';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Document, HydratedDocument, Types } from 'mongoose';

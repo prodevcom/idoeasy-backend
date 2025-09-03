@@ -3,7 +3,7 @@ import {
   PaginationInfo,
   Permission,
   PermissionDocument,
-} from '@entech/common';
+} from '@idoeasy/common';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { plainToInstance } from 'class-transformer';

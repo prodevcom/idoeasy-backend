@@ -3,7 +3,7 @@ import {
   ApiSwaggerDocs,
   CurrentUser,
   PermissionRole,
-} from '@entech/common';
+} from '@idoeasy/common';
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser as CurrentUserDecorator } from '../../../common/decorators';

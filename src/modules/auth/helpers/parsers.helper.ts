@@ -1,4 +1,4 @@
-import { SessionInfo, User } from '@entech/contracts';
+import { SessionInfo, User } from '@idoeasy/contracts';
 import { plainToInstance } from 'class-transformer';
 import { SessionResponseDto } from '../dto/session-response.dto';
 

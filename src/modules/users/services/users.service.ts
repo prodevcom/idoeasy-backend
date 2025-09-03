@@ -1,4 +1,4 @@
-import { CurrentUser, PaginationInfo, Role, User } from '@entech/common';
+import { CurrentUser, PaginationInfo, Role, User } from '@idoeasy/common';
 import {
   BadRequestException,
   ForbiddenException,
@@ -134,7 +134,7 @@ export class UsersService {
       name: user.name,
       email: user.email,
       status: user.status,
-      role: user.role._id.toString(),
+      role: user.roleId.toString(),
     };
 
     // Perform role selection and update the user
@@ -146,7 +146,7 @@ export class UsersService {
       name: updatedUser.name ?? user.name,
       email: updatedUser.email ?? user.email,
       status: updatedUser.status ?? user.status,
-      role: updatedUser.role?._id.toString() ?? user.role._id.toString(),
+      role: updatedUser.roleId?.toString() ?? user.roleId.toString(),
     };
 
     // Trigger user update hooks
@@ -276,11 +276,9 @@ export class UsersService {
     upsertDto: CreateUserDto | UpdateUserDto,
     currentUser: CurrentUser,
     userToBeUpdated?: User,
-  ) {
-    const role = await this.resolveTargetRole(upsertDto.role);
-
+  ): Promise<Role> {
+    const role = await this.resolveTargetRole(upsertDto.roleId);
     this.assertRoleActionAllowed(role, currentUser, userToBeUpdated);
-
     return role;
   }
 
@@ -293,18 +291,13 @@ export class UsersService {
   private async resolveTargetRole(
     roleId?: string | Types.ObjectId,
   ): Promise<Role> {
-    let role: Role | null = null;
+    const role = roleId
+      ? await this.roleRepo.findById(roleId.toString())
+      : await this.roleRepo.findDefault();
 
-    if (roleId) {
-      role = await this.roleRepo.findById(roleId.toString());
-    }
-    if (!role) {
-      role = await this.roleRepo.findDefault();
-    }
     if (!role) {
       throw new NotFoundException('Role not found');
     }
-
     return role;
   }
 
@@ -315,15 +308,17 @@ export class UsersService {
    * @param currentUser - The current user
    * @param userToBeUpdated - The user to update
    */
-  private assertRoleActionAllowed(
+  private async assertRoleActionAllowed(
     targetRole: Role,
     currentUser: CurrentUser,
     userToBeUpdated?: User,
   ) {
     const currentRole = currentUser.role;
-    const targetUserRole = userToBeUpdated?.role as Role | undefined;
-
     if (currentRole?.isAdmin) return;
+
+    const targetUserRole = await this.roleRepo.findById(
+      targetRole._id.toString(),
+    );
 
     if (targetUserRole?.isAdmin) {
       throw new ForbiddenException(

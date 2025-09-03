@@ -1,4 +1,4 @@
-import { SessionInfo } from '@entech/contracts';
+import { SessionInfo } from '@idoeasy/contracts';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Document, Types } from 'mongoose';

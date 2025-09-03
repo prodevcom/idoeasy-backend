@@ -1,4 +1,4 @@
-import { UpdateUserRequest, UserStatus } from '@entech/contracts';
+import { UpdateUserRequest, UserStatus } from '@idoeasy/contracts';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
 
@@ -30,5 +30,5 @@ export class UpdateUserDto implements UpdateUserRequest {
   })
   @IsOptional()
   @IsString()
-  role: string;
+  roleId: string;
 }

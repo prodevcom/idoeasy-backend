@@ -1,4 +1,4 @@
-import { CurrentUser, Session, SessionDocument, User } from '@entech/common';
+import { CurrentUser, Session, SessionDocument, User } from '@idoeasy/common';
 import {
   Injectable,
   Logger,

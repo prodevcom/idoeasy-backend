@@ -1,4 +1,4 @@
-import { CurrentUser, Role } from '@entech/common';
+import { CurrentUser, Role } from '@idoeasy/common';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateRoleDto, MoveRoleDto } from '../dto';

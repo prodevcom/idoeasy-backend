@@ -3,9 +3,10 @@ import {
   ApiSwaggerDocs,
   CurrentUser,
   PermissionRole,
-} from '@entech/common';
+} from '@idoeasy/common';
 import { Body, Controller, Delete, Get, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { AuditLogResponseDto } from '../../audit-log/dto/audit-log-response.dto';
 import { AuditLogService } from '../../audit-log/services/audit-log.service';
 import { LogoutDto } from '../../auth/dto/logout.dto';
 import { SessionResponseDto } from '../../auth/dto/session-response.dto';
@@ -86,7 +87,7 @@ export class MeController {
       ...updateMeDto,
       // Keep the same status and role as the current user
       status: currentUser.user.status,
-      role: currentUser.user.role._id.toString(),
+      roleId: currentUser.user.roleId.toString(),
     };
 
     const user = await this.usersService.update(
@@ -261,7 +262,9 @@ export class MeController {
     ],
   })
   @PermissionRole('me.audit-logs.read')
-  async getMyLogs(@CurrentUser() user: CurrentUser) {
+  async getMyLogs(
+    @CurrentUser() user: CurrentUser,
+  ): Promise<ApiResponseDto<AuditLogResponseDto[]>> {
     const logs = await this.auditLogService.getUserLogs(user.user._id);
     return ApiResponseDto.success(
       logs,

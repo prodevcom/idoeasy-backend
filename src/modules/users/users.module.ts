@@ -1,4 +1,4 @@
-import { Role, RoleSchema, User, UserSchema } from '@entech/common';
+import { Role, RoleSchema, User, UserSchema } from '@idoeasy/common';
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from '../auth/auth.module';

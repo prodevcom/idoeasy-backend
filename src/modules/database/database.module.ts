@@ -5,7 +5,7 @@ import {
   RoleSchema,
   User,
   UserSchema,
-} from '@entech/common';
+} from '@idoeasy/common';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';

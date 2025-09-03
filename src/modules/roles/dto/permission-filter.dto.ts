@@ -1,4 +1,4 @@
-import type { PermissionQueryParams } from '@entech/contracts';
+import type { PermissionQueryParams } from '@idoeasy/contracts';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsIn, IsOptional, IsString, Min } from 'class-validator';

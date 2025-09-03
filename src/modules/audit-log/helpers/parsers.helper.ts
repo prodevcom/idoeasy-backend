@@ -1,4 +1,4 @@
-import { AuditLog } from '@entech/common';
+import { AuditLog } from '@idoeasy/common';
 import { plainToInstance } from 'class-transformer';
 import { AuditLogResponseDto } from '../dto/audit-log-response.dto';
 

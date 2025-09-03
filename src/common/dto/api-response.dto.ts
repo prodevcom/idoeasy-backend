@@ -1,4 +1,4 @@
-import { PaginationInfo as PaginationInfoContract } from '@entech/contracts';
+import { PaginationInfo as PaginationInfoContract } from '@idoeasy/contracts';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Transform } from 'class-transformer';
 

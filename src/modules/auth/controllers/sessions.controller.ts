@@ -3,7 +3,7 @@ import {
   ApiSwaggerDocs,
   CurrentUser,
   PermissionRole,
-} from '@entech/common';
+} from '@idoeasy/common';
 import { Controller, Delete, Get, Headers, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { SessionResponseDto } from '../dto/session-response.dto';

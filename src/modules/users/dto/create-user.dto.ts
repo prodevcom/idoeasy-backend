@@ -1,4 +1,4 @@
-import { CreateUserRequest, UserStatus } from '@entech/contracts';
+import { CreateUserRequest, UserStatus } from '@idoeasy/contracts';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
@@ -43,5 +43,5 @@ export class CreateUserDto implements CreateUserRequest {
   })
   @IsString()
   @IsNotEmpty()
-  role: string;
+  roleId: string;
 }

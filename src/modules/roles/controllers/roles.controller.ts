@@ -3,7 +3,7 @@ import {
   ApiSwaggerDocs,
   CurrentUser,
   PermissionRole,
-} from '@entech/common';
+} from '@idoeasy/common';
 import {
   Body,
   Controller,

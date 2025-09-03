@@ -1,4 +1,4 @@
-import type { RoleQueryParams } from '@entech/contracts';
+import type { RoleQueryParams } from '@idoeasy/contracts';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsIn, IsOptional, IsString, Min } from 'class-validator';

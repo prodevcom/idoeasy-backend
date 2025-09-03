@@ -1,5 +1,5 @@
-import { CurrentUser } from '@entech/common';
-import { capitalizeWords } from '@entech/common/helpers';
+import { CurrentUser } from '@idoeasy/common';
+import { capitalizeWords } from '@idoeasy/common/helpers';
 import { Injectable, Logger } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { AuditLogService } from './audit-log.service';

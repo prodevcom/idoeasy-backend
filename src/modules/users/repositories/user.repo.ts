@@ -1,4 +1,4 @@
-import { Permission, Role, User } from '@entech/common';
+import { Permission, Role, User } from '@idoeasy/common';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -85,7 +85,9 @@ export class UserRepo {
         .find(query)
         .populate({
           path: 'role',
-          select: 'name description isActive isDefault isAdmin',
+          model: Role.name,
+          select: 'name',
+          options: { lean: true },
         })
         .skip(skip)
         .limit(limit)
@@ -107,7 +109,7 @@ export class UserRepo {
    * @param id - The user ID
    * @returns The user
    */
-  async findById(id: string) {
+  async findById(id: string): Promise<User> {
     return this.userModel.findById(id).exec();
   }
 
@@ -117,7 +119,7 @@ export class UserRepo {
    * @param email - The user email
    * @returns The user
    */
-  async findByEmail(email: string) {
+  async findByEmail(email: string): Promise<User> {
     return this.userModel.findOne({ email }).exec();
   }
 
@@ -127,7 +129,7 @@ export class UserRepo {
    * @param id - The user ID
    * @returns The user
    */
-  async findWithRoleAndPermissionsById(id: string) {
+  async findWithRoleAndPermissionsById(id: string): Promise<User> {
     return this.userModel
       .findById(id)
       .populate({

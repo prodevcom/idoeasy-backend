@@ -1,4 +1,4 @@
-import type { AuditLog as AuditLogContract } from '@entech/contracts';
+import type { AuditLog as AuditLogContract } from '@idoeasy/contracts';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Document, Types } from 'mongoose';

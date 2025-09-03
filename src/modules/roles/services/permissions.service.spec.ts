@@ -1,4 +1,4 @@
-import { CurrentUser, Permission, PermissionDocument } from '@entech/common';
+import { CurrentUser, Permission, PermissionDocument } from '@idoeasy/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Model } from 'mongoose';

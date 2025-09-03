@@ -18,28 +18,28 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@entech/common": [
+      "@idoeasy/common": [
         "src/common"
       ],
-      "@entech/common/*": [
+      "@idoeasy/common/*": [
         "src/common/*"
       ],
-      "@entech/modules": [
+      "@idoeasy/modules": [
         "src/modules"
       ],
-      "@entech/modules/*": [
+      "@idoeasy/modules/*": [
         "src/modules/*"
       ],
-      "@entech/config": [
+      "@idoeasy/config": [
         "src/config"
       ],
-      "@entech/config/*": [
+      "@idoeasy/config/*": [
         "src/config/*"
       ],
-      "@entech/utils": [
+      "@idoeasy/utils": [
         "src/utils"
       ],
-      "@entech/utils/*": [
+      "@idoeasy/utils/*": [
         "src/utils/*"
       ]
     },

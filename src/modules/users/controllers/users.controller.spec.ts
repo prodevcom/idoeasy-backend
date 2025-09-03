@@ -1,4 +1,4 @@
-import { ApiResponseDto, CurrentUser, UserStatus } from '@entech/common';
+import { ApiResponseDto, CurrentUser, UserStatus } from '@idoeasy/common';
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Types } from 'mongoose';

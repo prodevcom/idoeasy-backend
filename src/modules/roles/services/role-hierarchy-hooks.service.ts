@@ -1,4 +1,4 @@
-import { CurrentUser, Role } from '@entech/common';
+import { CurrentUser, Role } from '@idoeasy/common';
 import { Injectable, Logger } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { AuditLogService } from '../../audit-log/services/audit-log.service';

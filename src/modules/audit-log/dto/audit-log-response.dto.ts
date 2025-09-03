@@ -1,5 +1,5 @@
-import { TransformDate, TransformObjectId } from '@entech/common';
-import type { AuditLog as AuditLogContract } from '@entech/contracts';
+import { TransformDate, TransformObjectId } from '@idoeasy/common';
+import type { AuditLog as AuditLogContract } from '@idoeasy/contracts';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 

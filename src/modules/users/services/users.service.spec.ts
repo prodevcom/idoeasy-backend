@@ -1,4 +1,4 @@
-import { CurrentUser, Role, User, UserStatus } from '@entech/common';
+import { CurrentUser, Role, User, UserStatus } from '@idoeasy/common';
 import {
   BadRequestException,
   ForbiddenException,

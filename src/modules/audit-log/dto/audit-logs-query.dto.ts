@@ -1,4 +1,4 @@
-import { AuditLogQueryParams } from '@entech/contracts';
+import { AuditLogQueryParams } from '@idoeasy/contracts';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional } from 'class-validator';
 

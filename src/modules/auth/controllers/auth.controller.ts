@@ -1,4 +1,4 @@
-import { ApiResponseDto, ApiSwaggerDocs, Public } from '@entech/common';
+import { ApiResponseDto, ApiSwaggerDocs, Public } from '@idoeasy/common';
 import { Body, Controller, Post, Req } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';

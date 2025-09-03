@@ -1,4 +1,4 @@
-import type { Permission as PermissionContract } from '@entech/contracts';
+import type { Permission as PermissionContract } from '@idoeasy/contracts';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Document, HydratedDocument } from 'mongoose';

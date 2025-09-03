@@ -1,4 +1,4 @@
-import { Role } from '@entech/common';
+import { Role } from '@idoeasy/common';
 import {
   BadRequestException,
   Injectable,

@@ -5,7 +5,7 @@ import {
   PermissionGuard,
   TransformInterceptor,
   ValidationInterceptor,
-} from '@entech/common';
+} from '@idoeasy/common';
 import {
   AuditLogModule,
   AuthModule,
@@ -14,7 +14,7 @@ import {
   HealthModule,
   RolesModule,
   UsersModule,
-} from '@entech/modules';
+} from '@idoeasy/modules';
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 // Session activity is now handled in JwtAuthGuard; removing extra guard

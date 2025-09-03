@@ -1,4 +1,4 @@
-import { SwaggerConfig } from '@entech/config';
+import { SwaggerConfig } from '@idoeasy/config';
 import { INestApplication, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';

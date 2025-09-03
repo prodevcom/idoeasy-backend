@@ -2,10 +2,11 @@ import {
   User as UserContract,
   UserPreferences,
   UserStatus,
-} from '@entech/contracts';
+} from '@idoeasy/contracts';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Document, Types } from 'mongoose';
+import { mongooseLeanVirtuals } from 'mongoose-lean-virtuals';
 import { Role } from './role.schema';
 
 export type UserDocument = User & Document;
@@ -47,7 +48,14 @@ export class User implements Omit<UserContract, 'id'> {
     required: false,
   })
   @Prop({ type: Types.ObjectId, ref: Role.name })
-  role?: Types.ObjectId | Role;
+  roleId?: Types.ObjectId;
+
+  @ApiProperty({
+    description: 'Populated role',
+    required: false,
+    type: () => Role,
+  })
+  role?: Role;
 
   @ApiProperty({
     description: 'User preferences metadata',
@@ -66,8 +74,19 @@ export class User implements Omit<UserContract, 'id'> {
 
 export const UserSchema = SchemaFactory.createForClass(User);
 
-// Add indexes for optimal query performance
-// UserSchema.index({ email: 1 }); // Unique constraint already creates the index
+// Virtual that exposes `role` from `roleId`
+UserSchema.virtual('role', {
+  ref: Role.name,
+  localField: 'roleId',
+  foreignField: '_id',
+  justOne: true,
+});
+
+// Enable virtual in toJSON/toObject
+UserSchema.set('toObject', { virtuals: true });
+UserSchema.set('toJSON', { virtuals: true });
+
+UserSchema.plugin(mongooseLeanVirtuals);
 
 // Compound indexes for common query patterns (cover single-field queries too)
 UserSchema.index({ role: 1, status: 1, createdAt: -1 }); // Role + status + date (covers role: 1, status: 1, role+status)

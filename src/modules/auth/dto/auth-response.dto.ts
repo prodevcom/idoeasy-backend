@@ -1,5 +1,5 @@
-import { Authentication } from '@entech/contracts';
-import { UserResponseDto } from '@entech/modules/users/dto';
+import { Authentication } from '@idoeasy/contracts';
+import { UserResponseDto } from '@idoeasy/modules/users/dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 

@@ -1,4 +1,4 @@
-import { UpdateUserPreferencesRequest } from '@entech/contracts';
+import { UpdateUserPreferencesRequest } from '@idoeasy/contracts';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsOptional, IsString } from 'class-validator';
 

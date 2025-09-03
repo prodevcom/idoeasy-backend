@@ -1,4 +1,4 @@
-import { Session, SESSION_SERVICE, SessionSchema } from '@entech/common';
+import { Session, SESSION_SERVICE, SessionSchema } from '@idoeasy/common';
 import { forwardRef, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';

@@ -1,4 +1,4 @@
-import type { MoveRoleRequest } from '@entech/contracts';
+import type { MoveRoleRequest } from '@idoeasy/contracts';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 

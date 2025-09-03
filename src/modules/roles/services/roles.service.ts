@@ -1,4 +1,4 @@
-import { CurrentUser, PaginationInfo } from '@entech/common';
+import { CurrentUser, PaginationInfo } from '@idoeasy/common';
 import {
   ForbiddenException,
   Injectable,

@@ -1,4 +1,4 @@
-import { User } from '@entech/common';
+import { User } from '@idoeasy/common';
 import { plainToInstance } from 'class-transformer';
 import { UserResponseDto } from '../dto/user-response.dto';
 

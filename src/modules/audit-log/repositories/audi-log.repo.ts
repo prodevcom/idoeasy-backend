@@ -1,5 +1,5 @@
-import { AuditLog } from '@entech/common';
-import { CreateAuditLogRequest } from '@entech/contracts';
+import { AuditLog } from '@idoeasy/common';
+import { CreateAuditLogRequest } from '@idoeasy/contracts';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';

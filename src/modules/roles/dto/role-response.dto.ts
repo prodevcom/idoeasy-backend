@@ -1,5 +1,5 @@
-import { TransformDate, TransformObjectId } from '@entech/common';
-import type { Role } from '@entech/contracts';
+import { TransformDate, TransformObjectId } from '@idoeasy/common';
+import type { Role } from '@idoeasy/contracts';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { Types } from 'mongoose';

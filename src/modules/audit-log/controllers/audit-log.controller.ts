@@ -1,7 +1,7 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { ApiSwaggerDocs, JwtAuthGuard, PermissionRole } from '@entech/common';
+import { ApiSwaggerDocs, JwtAuthGuard, PermissionRole } from '@idoeasy/common';
 
 import { AuditLogsQueryDto } from '../dto/audit-logs-query.dto';
 import { AuditLogService } from '../services/audit-log.service';
